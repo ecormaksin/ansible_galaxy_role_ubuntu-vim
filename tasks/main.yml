@@ -1,2 +1,49 @@
 ---
 # tasks file for ansible_galaxy_role_ubuntu-vim
+
+- name: "Install Vim to Ubuntu | install package"
+  become: yes
+  ignore_errors: "{{ ansible_check_mode }}"
+  apt:
+    name: vim
+    state: present
+
+- name: "Install Vim to Ubuntu | call vim instead of vi"
+  become: yes
+  ignore_errors: "{{ ansible_check_mode }}"
+  shell:
+    cmd: |
+      cat "{{ etc.profile.file.path }}" | grep "alias vi='vim'" >/dev/null
+      if [ $? -eq 0 ]; then
+        echo "already changed."
+      else
+        echo "" >> "{{ etc.profile.file.path }}"
+        echo "alias vi='vim'" >> "{{ etc.profile.file.path }}"
+        . "{{ etc.profile.file.path }}"
+      fi
+
+- name: "Install Vim to Ubuntu | copy file to customise vimrc file"
+  become: yes
+  ignore_errors: "{{ ansible_check_mode }}"
+  copy:
+    src: vimrc_ext
+    dest: "{{ vim.rc_ext.dist.file.path }}"
+
+- name: "Install Vim to Ubuntu | add customised settings to vimrc file"
+  become: yes
+  ignore_errors: "{{ ansible_check_mode }}"
+  shell:
+    cmd: |
+      cat "{{ vim.rc.file.path }}" | grep "set nocompatible" >/dev/null
+      if [ $? -eq 0 ]; then
+        echo "already changed."
+      else
+        cat "{{ vim.rc_ext.dist.file.path }}" >> "{{ vim.rc.file.path }}"
+      fi
+
+- name: "Install Vim to Ubuntu | delete file for customising vimrc"
+  become: yes
+  ignore_errors: no
+  file:
+    path: "{{ vim.rc_ext.dist.file.path }}"
+    state: absent
