@@ -29,14 +29,13 @@ set incsearch
 " 逆は [ set nonumber ]
 set number
 " 改行 ( $ ) やタブ ( ^I ) を可視化する
-set list
+" set list
 " 括弧入力時に対応する括弧を強調する
 set showmatch
 " ファイルの末尾に改行を入れない
 set binary noeol
-" 自動インデントを有効にする
-" 逆は [ noautoindent ]
-set autoindent
+" Cの自動インデントを有効化する
+set cindentj
 " 構文ごとに色分け表示する
 " 逆は [ syntax off ]
 syntax on
@@ -45,3 +44,8 @@ highlight Comment ctermfg=LightCyan
 " ウィンドウ幅で行を折り返す
 " 逆は [ set nowrap ]
 set wrap
+
+" TABキーを押した際にタブ文字の代わりにスペースを入れる
+set expandtab
+set tabstop=2
+set shiftwidth=2
