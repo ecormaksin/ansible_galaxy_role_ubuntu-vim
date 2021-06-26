@@ -35,7 +35,7 @@ set showmatch
 " ファイルの末尾に改行を入れない
 set binary noeol
 " Cの自動インデントを有効化する
-set cindentj
+set cindent
 " 構文ごとに色分け表示する
 " 逆は [ syntax off ]
 syntax on
