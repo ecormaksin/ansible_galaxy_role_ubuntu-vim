@@ -5,8 +5,10 @@
   become: yes
   ignore_errors: "{{ ansible_check_mode }}"
   apt:
+    update_cache: yes
     name: vim
     state: present
+    autoremove: yes
 
 - name: "Install Vim to Ubuntu | call vim instead of vi"
   become: yes
@@ -22,28 +24,9 @@
         . "{{ etc.profile.file.path }}"
       fi
 
-- name: "Install Vim to Ubuntu | copy file to customise vimrc file"
+- name: "Install Vim to Ubuntu | copy file to customise vim settings"
   become: yes
   ignore_errors: "{{ ansible_check_mode }}"
   copy:
-    src: vimrc_ext
+    src: vimrc
     dest: "{{ vim.rc_ext.dist.file.path }}"
-
-- name: "Install Vim to Ubuntu | add customised settings to vimrc file"
-  become: yes
-  ignore_errors: "{{ ansible_check_mode }}"
-  shell:
-    cmd: |
-      cat "{{ vim.rc.file.path }}" | grep "set nocompatible" >/dev/null
-      if [ $? -eq 0 ]; then
-        echo "already changed."
-      else
-        cat "{{ vim.rc_ext.dist.file.path }}" >> "{{ vim.rc.file.path }}"
-      fi
-
-- name: "Install Vim to Ubuntu | delete file for customising vimrc"
-  become: yes
-  ignore_errors: no
-  file:
-    path: "{{ vim.rc_ext.dist.file.path }}"
-    state: absent

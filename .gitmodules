@@ -1,0 +1,4 @@
+[submodule "files"]
+	path = files
+	url = git@github.com:ecormaksin/vimrc.git
+	ignore = dirty

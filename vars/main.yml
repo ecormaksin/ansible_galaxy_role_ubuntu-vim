@@ -13,4 +13,4 @@ vim:
   rc_ext:
     dist:
       file:
-        path: /etc/vim/vimrc_ext
+        path: /etc/vim/vimrc.local
